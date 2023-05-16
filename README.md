@@ -8,17 +8,17 @@ This service is responsible for managing files in the storage. As of now, this u
 
 These settings can be set in the `appsettings.json` file or can be overridden using environment variable.
 
-| Varialble name | Usage | Example |
+| Variable name | Usage | Example |
 | -------------- | ----- | ------- |
-| `MinioSetting.Endpoint` | Minio storage endpoint | `localhost:6000` |
-| `MinioSetting.AccessKey` | Access key | `zAN*********FDPh` |
-| `MinioSetting.Secretkey` | Secret key | `Fy2QKQ*******FYs1lMu` |
-| `MinioSetting.UseSSL` | Should use SSL or not | `false` |
-| `MinioSetting.BucketName` | Object bucket name | `my-bucket` |
-| `RabbitMQSetting.Endpoint` | RabbitMQ Endpoint | `localhost:15674` |
-| `RabbitMQSetting.Username` | Username | `guest` |
-| `RabbitMQSetting.Password` | Passord | `pass***d` |
-| `RabbitMQSetting.VirtualHost` | Virtual host name, default `'/'` | `my-host` |
+| `MinioSetting__Endpoint` | Minio storage endpoint | `localhost:6000` |
+| `MinioSetting__AccessKey` | Access key | `zAN*********FDPh` |
+| `MinioSetting__Secretkey` | Secret key | `Fy2QKQ*******FYs1lMu` |
+| `MinioSetting__UseSSL` | Should use SSL or not | `false` |
+| `MinioSetting__BucketName` | Object bucket name | `my-bucket` |
+| `RabbitMQSetting__Endpoint` | RabbitMQ Endpoint | `localhost:15674` |
+| `RabbitMQSetting__Username` | Username | `guest` |
+| `RabbitMQSetting__Password` | Passord | `pass***d` |
+| `RabbitMQSetting__VirtualHost` | Virtual host name, default `'/'` | `my-host` |
 
 ## API Endpoints
 * [File](#file)

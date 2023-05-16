@@ -1,0 +1,21 @@
+name: Build on PR
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK 7.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Install dependencies
+        run: |
+          dotnet nuget add source --username abdurrahim373 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/letslearn373/index.json"
+          dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
