@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+import "google/protobuf/empty.proto";
+option csharp_namespace = "StorageService.Application.Protos";
+
+service GrpcFileService {
+    rpc UploadFile(stream  UploadFileRequest) returns (google.protobuf.Empty);
+}
+
+enum UploadFileType {
+    VIDEO = 0;
+    THUMBNAIL = 1;
+    FHD_1080 = 2;
+    HD_720 = 3;
+    SD_480 = 4;
+}
+
+message DataChunk {
+   bytes data = 1;
+}
+
+message UploadFileRequest {
+    DataChunk chunk = 1;
+    string videoId = 2;
+    UploadFileType type = 3;
+    string mimeType = 4;
+}

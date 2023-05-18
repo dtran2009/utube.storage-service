@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using StorageService.Api;
 using StorageService.Application;
+using StorageService.Application.GRpc;
 using StorageService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+    app.MapGrpcService<GrpcFileService>();
+    app.MapGrpcReflectionService();
+
     app.MapControllers();
+    app.UseCors();
+
     app.Run();
 }
-

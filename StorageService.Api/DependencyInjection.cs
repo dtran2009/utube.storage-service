@@ -14,6 +14,8 @@ public static class DependencyInjection
             x.MultipartBodyLengthLimit = long.MaxValue; // In case of multipart
         });
 
+        services.AddGrpcReflection();
+
         return services;
     }
 }
