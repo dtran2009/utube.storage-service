@@ -4,7 +4,7 @@
 
 This service is responsible for managing files in the storage. As of now, this uses [Minio](https://min.io/) for storing files.
 
-## Environment variables
+## :hammer_and_wrench: Environment variables
 
 These settings can be set in the `appsettings.json` file or can be overridden using environment variable.
 
@@ -20,7 +20,7 @@ These settings can be set in the `appsettings.json` file or can be overridden us
 | `RabbitMQSetting.Password` | Passord | `pass***d` |
 | `RabbitMQSetting.VirtualHost` | Virtual host name, default `'/'` | `my-host` |
 
-## API Endpoints
+## :speech_balloon: Rest API Endpoints
 * [File](#file)
     * [Upload](#upload)
 
@@ -44,8 +44,10 @@ POST /file/upload
 }
 ```
 
+## :dash: gRPC Endpoints
+* `UploadFile` - This endpoint takes file in stream along with **videoId**, **mimeType**, **upload type** (Video, thumbnail, fhd, hd, sd). Uploaded file will be stored in the storage based on defined type.
 
-## Events
+## 	:loudspeaker: Events
 | Event Name | Type | Purpose |
 | ---------- | ----- | ------- |
 | `VideoUploadedEvent` | Publish | This event is published when the file is successfully uploaded into the storage |
