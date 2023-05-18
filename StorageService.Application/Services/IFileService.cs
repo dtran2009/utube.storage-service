@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace StorageService.Application.Services;
+﻿namespace StorageService.Application.Services;
 
 public interface IFileService
 {
-    public Task<string> UploadFileAsync(string id, IFormFile inputFile, CancellationToken cancellationToken = default);
+    public Task<string> UploadFileAsync(string id, Stream stream, string filename, string mimeType, CancellationToken cancellationToken = default);
 }

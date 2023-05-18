@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using MimeTypes;
-using Minio;
+﻿using Minio;
 using StorageService.Application.Services;
 using StorageService.Infrastructure.Settings;
 
@@ -17,20 +15,16 @@ internal class MinioFileService : IFileService
         _minioClient = minioClient;
     }
 
-    public async Task<string> UploadFileAsync(string id, IFormFile inputFile, CancellationToken cancellationToken = default)
+    public async Task<string> UploadFileAsync(string id, Stream stream, string filename, string mimeType, CancellationToken cancellationToken = default)
     {
-        using var stream = inputFile.OpenReadStream();
-
         await CreateBucketIfNotExistsAsync(_minioSetting.BucketName, cancellationToken).ConfigureAwait(false);
-
-        var filename = $"{id}/{id}{MimeTypeMap.GetExtension(inputFile.ContentType)}";
 
         var putObjectArgs = new PutObjectArgs()
                 .WithBucket(_minioSetting.BucketName)
                 .WithObject(filename)
                 .WithStreamData(stream)
-                .WithObjectSize(inputFile.Length)
-                .WithContentType(inputFile.ContentType);
+                .WithObjectSize(stream.Length)
+                .WithContentType(mimeType);
 
         var response = await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using StorageService.Application.Services;
+using StorageService.Application.Setting;
 using StorageService.Infrastructure.Services;
 using StorageService.Infrastructure.Settings;
 
@@ -18,7 +19,15 @@ public static class DependencyInjection
         configuration.GetSection(nameof(MinioSetting)).Bind(minioSetting);
         services.AddSingleton(minioSetting);
 
-        services.AddSingleton<MinioClient>(_ =>
+        var storageSetting = new StorageSetting
+        {
+            BucketName = minioSetting.BucketName,
+            HostName = minioSetting.UseSSL ? "https://" : "http://" +
+                minioSetting.Endpoint.TrimEnd('/').TrimEnd('\\')
+        };
+        services.AddSingleton(storageSetting);
+
+        services.AddSingleton(_ =>
         {
             var minioClient = new MinioClient()
             .WithEndpoint(minioSetting.Endpoint)
