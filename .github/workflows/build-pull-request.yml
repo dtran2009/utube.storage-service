@@ -16,6 +16,6 @@ jobs:
       - name: Install dependencies
         run: |
           dotnet nuget add source --username rahim373 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/letslearn373/index.json"
-          dotnet restore
+          dotnet restore StorageService.sln
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build StorageService.sln --configuration Release --no-restore
