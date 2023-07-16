@@ -44,7 +44,8 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Uploa
         {
             await _bus.Publish(new VideoUploadedEvent(videoId, objectPath, objectUrl)).ConfigureAwait(false);
         }
-
+        
+        command.stream.Dispose();
         var response = new UploadFileResponse(videoId, objectPath, _storageSetting.GetObjectUrl(objectPath));
         return await Task.FromResult(response);
     }

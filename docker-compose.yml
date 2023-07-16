@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  storageservice.api:
+    image: ${DOCKER_REGISTRY-}storageserviceapi
+    build:
+      context: .
+      dockerfile: StorageService.Api/Dockerfile

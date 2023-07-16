@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StorageService.Application.Commands;
+using StorageService.Application.Dto;
 using StorageService.Application.Enums;
 
 namespace StorageService.Api.Controllers;
@@ -16,6 +17,13 @@ public class FileController : ControllerBase
         _sender = sender;
     }
 
+    /// <summary>
+    /// Upload file to the storage
+    /// </summary>
+    /// <param name="file">Video file</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(UploadFileResponse), 200)]
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFileAsync(IFormFile file, CancellationToken cancellationToken)
     {

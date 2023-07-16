@@ -1,4 +1,5 @@
-﻿namespace StorageService.Infrastructure.Settings;
+﻿
+namespace StorageService.Infrastructure.Settings;
 
 public class MinioSetting
 {
@@ -6,5 +7,6 @@ public class MinioSetting
     public string AccessKey { get; set; } = string.Empty;
     public string Secretkey { get; set; } = string.Empty;
     public bool UseSSL { get; set; } = false;
+    public bool HttpTrace { get; set; } = false;
     public string BucketName { get; set; } = string.Empty;
 }
