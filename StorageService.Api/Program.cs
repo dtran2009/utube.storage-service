@@ -3,6 +3,7 @@ using StorageService.Api;
 using StorageService.Application;
 using StorageService.Application.GRpc;
 using StorageService.Infrastructure;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -22,6 +23,16 @@ var app = builder.Build();
     app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
     app.MapGrpcService<GrpcFileService>();
     app.MapGrpcReflectionService();
+
+    app.MapPrometheusScrapingEndpoint();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "storage-service API V1");
+        c.RoutePrefix = string.Empty;
+        c.DocExpansion(DocExpansion.List);
+    });
 
     app.MapControllers();
     app.UseCors();

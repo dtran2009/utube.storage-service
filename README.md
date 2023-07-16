@@ -4,7 +4,7 @@
 
 This service is responsible for managing files in the storage. As of now, this uses [Minio](https://min.io/) for storing files.
 
-## :hammer_and_wrench: Environment variables
+## Environment variables
 
 These settings can be set in the `appsettings.json` file or can be overridden using environment variable.
 
@@ -15,12 +15,13 @@ These settings can be set in the `appsettings.json` file or can be overridden us
 | `MinioSetting__Secretkey` | Secret key | `Fy2QKQ*******FYs1lMu` |
 | `MinioSetting__UseSSL` | Should use SSL or not | `false` |
 | `MinioSetting__BucketName` | Object bucket name | `my-bucket` |
+| `MinioSetting__HttpTrace` | Enable HTTP Trace| boolean. Default `false` |
 | `RabbitMQSetting__Endpoint` | RabbitMQ Endpoint | `localhost:15674` |
 | `RabbitMQSetting__Username` | Username | `guest` |
 | `RabbitMQSetting__Password` | Passord | `pass***d` |
 | `RabbitMQSetting__VirtualHost` | Virtual host name, default `'/'` | `my-host` |
 
-## :speech_balloon: Rest API Endpoints
+## Rest API Endpoints
 * [File](#file)
     * [Upload](#upload)
 
@@ -44,10 +45,10 @@ POST /file/upload
 }
 ```
 
-## :dash: gRPC Endpoints
+## gRPC Endpoints
 * `UploadFile` - This endpoint takes file in stream along with **videoId**, **mimeType**, **upload type** (Video, thumbnail, fhd, hd, sd). Uploaded file will be stored in the storage based on defined type.
 
-## 	:loudspeaker: Events
+## Events
 | Event Name | Type | Purpose |
 | ---------- | ----- | ------- |
 | `VideoUploadedEvent` | Publish | This event is published when the file is successfully uploaded into the storage |

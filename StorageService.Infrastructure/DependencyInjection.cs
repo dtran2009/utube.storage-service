@@ -34,7 +34,7 @@ public static class DependencyInjection
             .WithCredentials(minioSetting.AccessKey, minioSetting.Secretkey)
             .WithSSL(minioSetting.UseSSL)
             .Build();
-            minioClient.SetTraceOn();
+            
             return minioClient;
         });
 
