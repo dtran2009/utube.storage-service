@@ -1,37 +1,11 @@
-version: '3.4'
+version: '3.8'
 
 services:
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: utube.rabbitmq
-    ports:
-      - 30013:5672
-      - 30014:15672
-    env_file:
-      - ../scripts/secrets/rabbitmq.env
-    volumes:
-      - ../scripts/data/rabbitmq-storage:/var/lib/rabbitmq
-    networks:
-      - utube_network
-
-  minio:
-    image: minio/minio
-    container_name: utube.minio
-    command: server /data --console-address :9001
-    ports:
-      - 30011:9000
-      - 30012:9001
-    env_file:
-      - ../scripts/secrets/minio.env
-    volumes:
-      - ../scripts/data/minio-storage:/data
-    networks:
-      - utube_network    
-
   storageservice.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+    container_name: utube.services.storage
     ports:
       - "50824:80"
       - "443"
@@ -42,10 +16,9 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - utube_network
-    depends_on:
-      - rabbitmq
-      - minio
 
 networks:
   utube_network:
+    name: my_utube_network
+    external: true
 
