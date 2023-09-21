@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.Features;
+﻿using Carter;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.OpenApi.Models;
+using MinimalHelpers.OpenApi;
 using OpenTelemetry.Metrics;
 
 namespace StorageService.Api;
@@ -8,11 +10,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddControllers();
+        services.AddCarter();
 
-        services.AddSwaggerGen(c =>
+
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "UTube.StorageService", Version = "v1" });
+            options.AddMissingSchemas();
         });
 
         services.Configure<FormOptions>(x =>
@@ -22,6 +26,8 @@ public static class DependencyInjection
         });
 
         services.AddGrpcReflection();
+
+        services.AddAntiforgery();
 
         services.AddOpenTelemetry()
             .WithMetrics(builder => builder
