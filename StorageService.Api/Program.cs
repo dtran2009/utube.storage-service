@@ -1,9 +1,10 @@
+using Carter;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using MinimalHelpers.OpenApi;
 using StorageService.Api;
 using StorageService.Application;
 using StorageService.Application.GRpc;
 using StorageService.Infrastructure;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -20,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.MapCarter();
     app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
     app.MapGrpcService<GrpcFileService>();
     app.MapGrpcReflectionService();
@@ -27,15 +29,8 @@ var app = builder.Build();
     app.MapPrometheusScrapingEndpoint();
 
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Storage Service API V1");
-        c.RoutePrefix = string.Empty;
-        c.DocExpansion(DocExpansion.List);
-    });
+    app.UseSwaggerUI();
 
-    app.MapControllers();
     app.UseCors();
-
     app.Run();
 }
