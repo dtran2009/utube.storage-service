@@ -48,6 +48,8 @@ public static class DependencyInjection
 
         services.AddMassTransit(x =>
         {
+            x.SetKebabCaseEndpointNameFormatter();
+
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host(rabbitMQSetting.Endpoint, rabbitMQSetting.VirtualHost, h =>
@@ -55,6 +57,8 @@ public static class DependencyInjection
                     h.Username(rabbitMQSetting.Username);
                     h.Password(rabbitMQSetting.Password);
                 });
+
+                cfg.ConfigureEndpoints(context);
             });
         });
 
