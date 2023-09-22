@@ -36,7 +36,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Uploa
         var videoId = command.types == UploadTypes.VIDEO ?
             Guid.NewGuid().ToString().ToLower() : command.videoId;
 
-        string fileName = command.fileName ?? GenerateFileName(videoId, command.types, command.mimeType);
+        string fileName = GenerateFileName(videoId, command.types, command.fileName, command.mimeType);
 
         var objectPath = await _fileService.UploadFileAsync(videoId, command.stream, fileName, command.mimeType, cancellationToken);
         var objectUrl = _storageSetting.GetObjectUrl(objectPath);
@@ -51,16 +51,25 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Uploa
         return await Task.FromResult(response);
     }
 
-    private string GenerateFileName(string videoId, UploadTypes types, string mimeType)
+    private string GenerateFileName(string videoId, UploadTypes types, string? fileName, string mimeType)
     {
+        if (types == UploadTypes.THUMBNAIL)
+        {
+            fileName = Guid.NewGuid() + MimeTypeMap.GetExtension(mimeType);
+        }
+        else
+        {
+            fileName = string.IsNullOrEmpty(fileName) ? videoId + MimeTypeMap.GetExtension(mimeType) : fileName;
+        }
+
         return $"{videoId}/" + types switch
         {
-            UploadTypes.VIDEO => $"{videoId}",
-            UploadTypes.THUMBNAIL => $"thumbnail/{Guid.NewGuid()}",
-            UploadTypes.FHD_1080 => $"FHD/{videoId}",
-            UploadTypes.HD_720 => $"HD/{videoId}",
-            UploadTypes.SD_480 => $"SD/{videoId}",
-            _ => $"temp/{videoId}"
-        } + MimeTypeMap.GetExtension(mimeType);
+            UploadTypes.VIDEO => $"",
+            UploadTypes.THUMBNAIL => $"thumbnail/",
+            UploadTypes.FHD_1080 => $"FHD/",
+            UploadTypes.HD_720 => $"HD/",
+            UploadTypes.SD_480 => $"SD/",
+            _ => $"temp/"
+        } + fileName;
     }
 }
