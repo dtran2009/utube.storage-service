@@ -23,4 +23,5 @@ message UploadFileRequest {
     string videoId = 2;
     UploadFileType type = 3;
     string mimeType = 4;
+    string fileName = 5;
 }

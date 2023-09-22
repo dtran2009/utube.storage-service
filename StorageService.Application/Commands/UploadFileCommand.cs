@@ -13,7 +13,8 @@ public record UploadFileCommand(
     Stream stream,
     UploadTypes types,
     string mimeType,
-    string videoId) : IRequest<UploadFileResponse>;
+    string videoId,
+    string? fileName = null) : IRequest<UploadFileResponse>;
 
 
 public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, UploadFileResponse>
@@ -35,7 +36,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Uploa
         var videoId = command.types == UploadTypes.VIDEO ?
             Guid.NewGuid().ToString().ToLower() : command.videoId;
 
-        string fileName = GenerateFileName(videoId, command.types, command.mimeType);
+        string fileName = command.fileName ?? GenerateFileName(videoId, command.types, command.mimeType);
 
         var objectPath = await _fileService.UploadFileAsync(videoId, command.stream, fileName, command.mimeType, cancellationToken);
         var objectUrl = _storageSetting.GetObjectUrl(objectPath);
