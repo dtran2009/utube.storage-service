@@ -23,6 +23,7 @@ public class GrpcFileService : GrpcFileServiceBase
         var videoId = string.Empty;
         UploadFileType uploadType = UploadFileType.Thumbnail;
         var mimeType = string.Empty;
+        var fileName = string.Empty;
 
         while (!context.CancellationToken.IsCancellationRequested
             && await requestStream.MoveNext())
@@ -30,12 +31,14 @@ public class GrpcFileService : GrpcFileServiceBase
             videoId = requestStream.Current.VideoId;
             uploadType = requestStream.Current.Type;
             mimeType = requestStream.Current.MimeType;
+            fileName = requestStream.Current.FileName;
+
             await stream.WriteAsync(requestStream.Current.Chunk.Data.ToByteArray());
         }
 
         stream.Seek(0, SeekOrigin.Begin);
 
-        var command = new UploadFileCommand(stream, (UploadTypes)(int)uploadType, mimeType, videoId);
+        var command = new UploadFileCommand(stream, (UploadTypes)(int)uploadType, mimeType, videoId, fileName);
         await _sender.Send(command, context.CancellationToken);
         return await Task.FromResult(new Empty());
     }
